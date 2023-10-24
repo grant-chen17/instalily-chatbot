@@ -1,20 +1,21 @@
 import React from 'react';
 import '@chatscope/chat-ui-kit-styles/dist/default/styles.css';
 import {
-    MainContainer,
     ChatContainer,
     MessageList,
     Message,
     MessageInput,
 } from '@chatscope/chat-ui-kit-react';
+
 enum direction{
     "incoming",
     "outgoing"
 }
+const apiKey = "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"
+
 export function emptyMessageList() {
     return (
         <MessageList>
-
         </MessageList>
     );
 }
@@ -52,6 +53,7 @@ export class ChatWindow extends React.Component<{}, {messageList: JSX.Element[]}
         const messages = [...this.state.messageList];
         messages.push(this.newMessage(message, direction.outgoing))
         this.setState({ messageList: messages });
+        //contact the llm
     }
 
     receivedMessage = (message: string) => {

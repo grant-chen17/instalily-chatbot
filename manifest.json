@@ -6,5 +6,13 @@
     "action": {
         "default_popup": "js/index.html",
         "default_title": "The Strongest"
-    }
+    },
+    "content_scripts": [{
+        "js": ["scripts/content.js"],
+        "matches": ["https://*/*"]
+    }],
+    "permissions": [
+        "sidePanel"
+      ]
+    
 }

@@ -2,13 +2,12 @@ import './App.css';
 import '@chatscope/chat-ui-kit-styles/dist/default/styles.css';
 import {ChatWindow} from './ChatWindow';
 import {
-    MainContainer,
-    ChatContainer,
-    MessageList,
-    Message,
-    MessageInput,
+    MainContainer
 } from '@chatscope/chat-ui-kit-react';
 
+export interface AppProps {
+    mattress: string;
+}
 function App() {
     return (
         <div className="App">
