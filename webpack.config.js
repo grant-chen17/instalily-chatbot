@@ -1,6 +1,9 @@
 const path = require("path");
+const webpack = require("webpack");
 const HTMLPlugin = require("html-webpack-plugin");
-const CopyPlugin = require("copy-webpack-plugin")
+const CopyPlugin = require("copy-webpack-plugin");
+const dotenv = require('dotenv-webpack');
+
 
 module.exports = {
     entry: {
@@ -36,7 +39,13 @@ module.exports = {
                 { from: "manifest.json", to: "../manifest.json" },
             ],
         }),
-        ...getHtmlPlugins(["index"]),
+        new webpack.DefinePlugin({
+            'process.env': {
+              NODE_ENV: JSON.stringify('production'),
+            },
+          }),
+        new dotenv(),
+        ...getHtmlPlugins(["index"])
     ],
     resolve: {
         extensions: [".tsx", ".ts", ".js"],

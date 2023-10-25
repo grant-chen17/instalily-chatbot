@@ -6,8 +6,9 @@ import {
     Message,
     MessageInput,
 } from '@chatscope/chat-ui-kit-react';
+import { OpenAI } from 'openai';
 
-enum direction{
+enum direction {
     "incoming",
     "outgoing"
 }
@@ -19,7 +20,10 @@ export function emptyMessageList() {
     );
 }
 
-export class ChatWindow extends React.Component<{}, {messageList: JSX.Element[]}> {
+export class ChatWindow extends React.Component<{}, { messageList: JSX.Element[] }> {
+
+    openai: OpenAI;
+
     constructor(props: any) {
         super(props);
         this.state = {
@@ -33,6 +37,10 @@ export class ChatWindow extends React.Component<{}, {messageList: JSX.Element[]}
                 }} ></Message>]
 
         }
+        this.openai = new OpenAI({
+            apiKey: process.env.REACT_APP_OPENAI_API_KEY,
+            dangerouslyAllowBrowser: true
+        });
     }
 
 
@@ -46,20 +54,26 @@ export class ChatWindow extends React.Component<{}, {messageList: JSX.Element[]}
                 }}></Message>
         );
     }
-
+    callGPT = async () => {
+        const completion = await this.openai.chat.completions.create({
+            messages: [{ role: "system", content: "You are a helpful assistant." }],
+            model: "gpt-3.5-turbo",
+        });
+        console.log(completion.choices[0].message);
+    }
 
     sentMessage = (message: string) => {
         const messages = [...this.state.messageList];
         messages.push(this.newMessage(message, direction.outgoing))
         this.setState({ messageList: messages });
         //contact the llm
+        this.callGPT();
     }
 
     receivedMessage = (message: string) => {
         const messages = [...this.state.messageList];
         messages.push(this.newMessage(message, direction.incoming))
         this.setState({ messageList: messages });
-
     }
 
     render() {
