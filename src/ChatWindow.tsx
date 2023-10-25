@@ -11,7 +11,6 @@ enum direction{
     "incoming",
     "outgoing"
 }
-const apiKey = "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"
 
 export function emptyMessageList() {
     return (
