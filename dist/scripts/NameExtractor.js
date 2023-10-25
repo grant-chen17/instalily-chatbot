@@ -1,1 +1,0 @@
-export var mattress;export function getName(t){mattress=t}

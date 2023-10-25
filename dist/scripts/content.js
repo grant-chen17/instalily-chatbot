@@ -1,1 +1,0 @@
-function extractInfo(){const o=document.querySelectorAll("li:not([class])");for(let t=0;t<o.length;t++){const l=o[t];console.log(l)}let t=import("./NameExtractor.js");console.log(t),console.log("hello from react.js")}extractInfo();
