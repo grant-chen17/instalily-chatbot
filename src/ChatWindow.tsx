@@ -30,11 +30,7 @@ export class ChatWindow extends React.Component<{}, { messageList: JSX.Element[]
             messageList: [<Message model={{
                 message: "through heaven and earth i alone am the honored one", sender: "gojo",
                 direction: "incoming", position: "normal"
-            }} ></Message>, <Message
-                model={{
-                    message: "are you the strongest bc ur gojo or are u gojo bc ur the strongest", sender: "geto",
-                    direction: "outgoing", position: "normal"
-                }} ></Message>]
+            }} ></Message>]
 
         }
         this.openai = new OpenAI({
@@ -54,12 +50,13 @@ export class ChatWindow extends React.Component<{}, { messageList: JSX.Element[]
                 }}></Message>
         );
     }
-    callGPT = async () => {
+    callGPT = async (request: string) => {
         const completion = await this.openai.chat.completions.create({
-            messages: [{ role: "system", content: "You are a helpful assistant." }],
+            messages: [{ role: "system", content: request }],
             model: "gpt-3.5-turbo",
         });
         console.log(completion.choices[0].message);
+        this.receivedMessage(completion.choices[0].message.content);
     }
 
     sentMessage = (message: string) => {
@@ -67,7 +64,7 @@ export class ChatWindow extends React.Component<{}, { messageList: JSX.Element[]
         messages.push(this.newMessage(message, direction.outgoing))
         this.setState({ messageList: messages });
         //contact the llm
-        this.callGPT();
+        this.callGPT(message);
     }
 
     receivedMessage = (message: string) => {
