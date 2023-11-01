@@ -1,4 +1,5 @@
-To pull the source code run ```git fetch github.com/grant-chen17/instalily-chatbot/```  
+To pull the source code run  
+```git fetch github.com/grant-chen17/instalily-chatbot/```  
 To run this project locally you will need to obtain an OpenAI API key.  
 Once you have obtained one go to the ```src``` folder and create a file called ```.env```  
 Create the environment variable like so:  
