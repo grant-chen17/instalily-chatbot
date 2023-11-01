@@ -9,6 +9,9 @@
     },
     "permissions": [
         "sidePanel"
-      ]
+    ],
+    "side_panel": {
+        "default_path": "js/index.html"
+      }
     
 }

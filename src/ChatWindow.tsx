@@ -23,12 +23,12 @@ export function emptyMessageList() {
 export class ChatWindow extends React.Component<{}, { messageList: JSX.Element[] }> {
 
     openai: OpenAI;
-
+    messages: string[];
     constructor(props: any) {
         super(props);
         this.state = {
             messageList: [<Message model={{
-                message: "through heaven and earth i alone am the honored one", sender: "gojo",
+                message: "Hi! I'm GPT-3.5! Ask me questions about Saatva mattresses!", sender: "gojo",
                 direction: "incoming", position: "normal"
             }} ></Message>]
 
@@ -37,6 +37,7 @@ export class ChatWindow extends React.Component<{}, { messageList: JSX.Element[]
             apiKey: process.env.REACT_APP_OPENAI_API_KEY,
             dangerouslyAllowBrowser: true
         });
+        this.messages = ["Hi! I'm GPT-3.5! Ask me questions about Saatva mattresses!"];
     }
 
 
@@ -51,8 +52,16 @@ export class ChatWindow extends React.Component<{}, { messageList: JSX.Element[]
         );
     }
     callGPT = async (request: string) => {
+        var context = [];
+        for( var i = 0; i < this.messages.length; i++) {
+            if(i % 2 == 0) {
+                context.push({role: "assistant", content: this.messages[i]});
+            } else {
+                context.push({role: "system", content: this.messages[i]});
+            }
+        }
         const completion = await this.openai.chat.completions.create({
-            messages: [{ role: "system", content: request }],
+            messages: context,
             model: "gpt-3.5-turbo",
         });
         console.log(completion.choices[0].message);
@@ -61,7 +70,8 @@ export class ChatWindow extends React.Component<{}, { messageList: JSX.Element[]
 
     sentMessage = (message: string) => {
         const messages = [...this.state.messageList];
-        messages.push(this.newMessage(message, direction.outgoing))
+        messages.push(this.newMessage(message, direction.outgoing));
+        this.messages.push(message);
         this.setState({ messageList: messages });
         //contact the llm
         this.callGPT(message);
@@ -70,6 +80,7 @@ export class ChatWindow extends React.Component<{}, { messageList: JSX.Element[]
     receivedMessage = (message: string) => {
         const messages = [...this.state.messageList];
         messages.push(this.newMessage(message, direction.incoming))
+        this.messages.push(message);
         this.setState({ messageList: messages });
     }
 
